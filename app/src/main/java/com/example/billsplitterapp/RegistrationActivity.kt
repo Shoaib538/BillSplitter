@@ -1,6 +1,10 @@
 package com.example.billsplitterapp
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -30,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -39,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.database.FirebaseDatabase
 
 class RegistrationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +64,8 @@ fun RegisterScreen()
     var email by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val context = LocalContext.current as Activity
 
     Column(
         modifier = Modifier
@@ -184,6 +192,34 @@ fun RegisterScreen()
 
         Text(
             modifier = Modifier
+                .clickable {
+                    when {
+                        email.isEmpty() -> {
+                            Toast.makeText(context, " Please Enter Mail", Toast.LENGTH_SHORT).show()
+                        }
+                        fullName.isEmpty() -> {
+                            Toast.makeText(context, " Please Enter Name", Toast.LENGTH_SHORT).show()
+                        }
+
+                        phoneNumber.isEmpty() -> {
+                            Toast.makeText(context, " Please Enter PhoneNumber", Toast.LENGTH_SHORT).show()
+                        }
+                        password.isEmpty() -> {
+                            Toast.makeText(context, " Please Enter Password", Toast.LENGTH_SHORT).show()
+                        }
+
+                        else -> {
+                            val userData = UserData(
+                                fullName,
+                                email,
+                                phoneNumber,
+                                password
+                            )
+                            registerUser(userData,context)
+                        }
+
+                    }
+                }
                 .width(350.dp)
                 .background(
                     color = colorResource(id = R.color.bt_color),
@@ -222,6 +258,8 @@ fun RegisterScreen()
             Text(
                 modifier = Modifier
                     .clickable {
+                        context.startActivity(Intent(context, LoginActivity::class.java))
+                        context.finish()
                     },
                 text = "Login",
                 textAlign = TextAlign.Center,
@@ -236,3 +274,40 @@ fun RegisterScreen()
         Spacer(modifier = Modifier.height(46.dp))
     }
 }
+
+
+fun registerUser(userData: UserData, context: Context) {
+
+    val firebaseDatabase = FirebaseDatabase.getInstance()
+    val databaseReference = firebaseDatabase.getReference("BillSplitterData")
+
+    databaseReference.child(userData.emailid.replace(".", ","))
+        .setValue(userData)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(context, "You Registered Successfully", Toast.LENGTH_SHORT)
+                    .show()
+
+            } else {
+                Toast.makeText(
+                    context,
+                    "Registration Failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        .addOnFailureListener { _ ->
+            Toast.makeText(
+                context,
+                "Something went wrong",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+}
+
+data class UserData(
+    var name : String = "",
+    var emailid : String = "",
+    var area : String = "",
+    var password: String = ""
+)
