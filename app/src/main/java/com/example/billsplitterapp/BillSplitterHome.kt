@@ -61,17 +61,29 @@ fun BillSplitterHomeActivityScreen()
                 .fillMaxWidth()
                 .background(
                     color = colorResource(id = R.color.bt_color)
-                )
+                    ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .padding(12.dp),
-                text = "Home",
+                text = "Bill Splitter App",
                 color = Color.White,
                 fontSize = 22.sp,
-                textAlign = TextAlign.Center
+                fontWeight = FontWeight.Bold
+
             )
+            Spacer(modifier = Modifier.weight(1f))
+
+            Image(
+                modifier = Modifier
+                    .size(32.dp),
+                painter = painterResource(id = R.drawable.profile_user),
+                contentDescription = "Create\nNew Bill"
+            )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -90,8 +102,9 @@ fun BillSplitterHomeActivityScreen()
                     modifier = Modifier
                         .weight(1f)
                         .wrapContentHeight()
+                        .padding(horizontal = 30.dp, vertical = 6.dp)
                         .background(
-                            color = colorResource(id = R.color.tran_white),
+                            color = colorResource(id = R.color.white),
                             shape = RoundedCornerShape(6.dp)
                         )
                         .border(
@@ -114,9 +127,9 @@ fun BillSplitterHomeActivityScreen()
                 ) {
                     Image(
                         modifier = Modifier
-                            .size(64.dp)
+                            .size(48.dp)
                             .align(Alignment.CenterHorizontally),
-                        painter = painterResource(id = R.drawable.user),
+                        painter = painterResource(id = R.drawable.new_bill),
                         contentDescription = "Create\nNew Bill"
                     )
 
@@ -129,7 +142,7 @@ fun BillSplitterHomeActivityScreen()
                         text = "Create\nNew Bill",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge.copy(
-                            color = Color.White,
+                            color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
                     )
@@ -141,8 +154,9 @@ fun BillSplitterHomeActivityScreen()
                     modifier = Modifier
                         .weight(1f)
                         .wrapContentHeight()
+                        .padding(horizontal = 30.dp, vertical = 6.dp)
                         .background(
-                            color = colorResource(id = R.color.tran_white),
+                            color = colorResource(id = R.color.white),
                             shape = RoundedCornerShape(6.dp)
                         )
                         .border(
@@ -164,9 +178,9 @@ fun BillSplitterHomeActivityScreen()
                 ) {
                 Image(
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(48.dp)
                         .align(Alignment.CenterHorizontally),
-                    painter = painterResource(id = R.drawable.user),
+                    painter = painterResource(id = R.drawable.add_bill),
                     contentDescription = "Add\nBill"
                 )
 
@@ -179,7 +193,7 @@ fun BillSplitterHomeActivityScreen()
                     text = "Add\nBill",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge.copy(
-                        color = Color.White,
+                        color = Color.Black,
                         fontWeight = FontWeight.Bold
                     )
                 )
@@ -197,8 +211,9 @@ fun BillSplitterHomeActivityScreen()
                     modifier = Modifier
                         .weight(1f)
                         .wrapContentHeight()
+                        .padding(horizontal = 30.dp, vertical = 6.dp)
                         .background(
-                            color = colorResource(id = R.color.tran_white),
+                            color = colorResource(id = R.color.white),
                             shape = RoundedCornerShape(6.dp)
                         )
                         .border(
@@ -221,9 +236,9 @@ fun BillSplitterHomeActivityScreen()
                 ) {
                     Image(
                         modifier = Modifier
-                            .size(64.dp)
+                            .size(48.dp)
                             .align(Alignment.CenterHorizontally),
-                        painter = painterResource(id = R.drawable.user),
+                        painter = painterResource(id = R.drawable.manage_bill),
                         contentDescription = "Manage\nBill"
                     )
 
@@ -236,7 +251,7 @@ fun BillSplitterHomeActivityScreen()
                         text = "Manage\nBill",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge.copy(
-                            color = Color.White,
+                            color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
                     )
@@ -248,8 +263,9 @@ fun BillSplitterHomeActivityScreen()
                     modifier = Modifier
                         .weight(1f)
                         .wrapContentHeight()
+                        .padding(horizontal = 30.dp, vertical = 6.dp)
                         .background(
-                            color = colorResource(id = R.color.tran_white),
+                            color = colorResource(id = R.color.white),
                             shape = RoundedCornerShape(6.dp)
                         )
                         .border(
@@ -272,9 +288,9 @@ fun BillSplitterHomeActivityScreen()
                 ) {
                 Image(
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(48.dp)
                         .align(Alignment.CenterHorizontally),
-                    painter = painterResource(id = R.drawable.user),
+                    painter = painterResource(id = R.drawable.delete_bill),
                     contentDescription = "Delete\nBill"
                 )
 
@@ -287,7 +303,7 @@ fun BillSplitterHomeActivityScreen()
                     text = "Delete\nBill",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge.copy(
-                        color = Color.White,
+                        color = Color.Black,
                         fontWeight = FontWeight.Bold
                     )
                 )
@@ -305,8 +321,9 @@ fun BillSplitterHomeActivityScreen()
                     modifier = Modifier
                         .weight(1f)
                         .wrapContentHeight()
+                        .padding(horizontal = 30.dp, vertical = 6.dp)
                         .background(
-                            color = colorResource(id = R.color.tran_white),
+                            color = colorResource(id = R.color.white),
                             shape = RoundedCornerShape(6.dp)
                         )
                         .border(
@@ -329,9 +346,9 @@ fun BillSplitterHomeActivityScreen()
                 ) {
                     Image(
                         modifier = Modifier
-                            .size(64.dp)
+                            .size(48.dp)
                             .align(Alignment.CenterHorizontally),
-                        painter = painterResource(id = R.drawable.user),
+                        painter = painterResource(id = R.drawable.summary_bill),
                         contentDescription = "View\nSummary"
                     )
 
@@ -344,7 +361,7 @@ fun BillSplitterHomeActivityScreen()
                         text = "View\nSummary",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge.copy(
-                            color = Color.White,
+                            color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
                     )
@@ -356,8 +373,9 @@ fun BillSplitterHomeActivityScreen()
                     modifier = Modifier
                         .weight(1f)
                         .wrapContentHeight()
+                        .padding(horizontal = 30.dp, vertical = 6.dp)
                         .background(
-                            color = colorResource(id = R.color.tran_white),
+                            color = colorResource(id = R.color.white),
                             shape = RoundedCornerShape(6.dp)
                         )
                         .border(
@@ -380,9 +398,9 @@ fun BillSplitterHomeActivityScreen()
                 ) {
                     Image(
                         modifier = Modifier
-                            .size(64.dp)
+                            .size(48.dp)
                             .align(Alignment.CenterHorizontally),
-                        painter = painterResource(id = R.drawable.user),
+                        painter = painterResource(id = R.drawable.access_profile),
                         contentDescription = "Access\nProfile"
                     )
 
@@ -395,7 +413,7 @@ fun BillSplitterHomeActivityScreen()
                         text = "Access\nProfile",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge.copy(
-                            color = Color.White,
+                            color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
                     )
@@ -413,8 +431,9 @@ fun BillSplitterHomeActivityScreen()
                     modifier = Modifier
                         .weight(1f)
                         .wrapContentHeight()
+                        .padding(horizontal = 30.dp, vertical = 6.dp)
                         .background(
-                            color = colorResource(id = R.color.tran_white),
+                            color = colorResource(id = R.color.white),
                             shape = RoundedCornerShape(6.dp)
                         )
                         .border(
@@ -437,9 +456,9 @@ fun BillSplitterHomeActivityScreen()
                 ) {
                     Image(
                         modifier = Modifier
-                            .size(64.dp)
+                            .size(48.dp)
                             .align(Alignment.CenterHorizontally),
-                        painter = painterResource(id = R.drawable.user),
+                        painter = painterResource(id = R.drawable.manage_profile),
                         contentDescription = "Manage\nProfile"
                     )
 
@@ -452,7 +471,7 @@ fun BillSplitterHomeActivityScreen()
                         text = "Manage\nProfile",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge.copy(
-                            color = Color.White,
+                            color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
                     )
@@ -464,8 +483,9 @@ fun BillSplitterHomeActivityScreen()
                     modifier = Modifier
                         .weight(1f)
                         .wrapContentHeight()
+                        .padding(horizontal = 30.dp, vertical = 6.dp)
                         .background(
-                            color = colorResource(id = R.color.tran_white),
+                            color = colorResource(id = R.color.white),
                             shape = RoundedCornerShape(6.dp)
                         )
                         .border(
@@ -488,9 +508,9 @@ fun BillSplitterHomeActivityScreen()
                 ) {
                     Image(
                         modifier = Modifier
-                            .size(64.dp)
+                            .size(48.dp)
                             .align(Alignment.CenterHorizontally),
-                        painter = painterResource(id = R.drawable.user),
+                        painter = painterResource(id = R.drawable.logout_profile),
                         contentDescription = "LogOut\nProfile"
                     )
 
@@ -503,7 +523,7 @@ fun BillSplitterHomeActivityScreen()
                         text = "LogOut\nProfile",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge.copy(
-                            color = Color.White,
+                            color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
                     )
