@@ -13,6 +13,9 @@
         android:theme="@style/Theme.BillSplitterApp"
         tools:targetApi="31">
         <activity
+            android:name=".CreateBillActivity"
+            android:exported="false" />
+        <activity
             android:name=".BillSplitterHome"
             android:exported="false" />
         <activity
