@@ -3,6 +3,7 @@ package com.example.billsplitterapp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-class BillSplitterHome : AppCompatActivity() {
+class BillSplitterHome : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -46,7 +47,7 @@ class BillSplitterHome : AppCompatActivity() {
 @Composable
 fun BillSplitterHomeActivityScreen()
 {
-//    val context = LocalContext.current as Activity
+    val context = LocalContext.current as Activity
 
     Column(
         modifier = Modifier
@@ -114,12 +115,12 @@ fun BillSplitterHomeActivityScreen()
                         )
                         .padding(horizontal = 6.dp, vertical = 12.dp)
                         .clickable {
-//                            context.startActivity(
-//                                Intent(
-//                                    context,
-//                                    QuizCategoriesActivity::class.java
-//                                )
-//                            )
+                            context.startActivity(
+                                Intent(
+                                    context,
+                                    CreateBillActivity::class.java
+                                )
+                            )
 
                         }
 
@@ -141,7 +142,7 @@ fun BillSplitterHomeActivityScreen()
                             .align(Alignment.CenterHorizontally),
                         text = "Create\nNew Bill",
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge.copy(
+                        style = MaterialTheme.typography.titleMedium.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
@@ -192,7 +193,7 @@ fun BillSplitterHomeActivityScreen()
                         .align(Alignment.CenterHorizontally),
                     text = "Add\nBill",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge.copy(
+                    style = MaterialTheme.typography.titleMedium.copy(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
                     )
@@ -250,7 +251,7 @@ fun BillSplitterHomeActivityScreen()
                             .align(Alignment.CenterHorizontally),
                         text = "Manage\nBill",
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge.copy(
+                        style = MaterialTheme.typography.titleMedium.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
@@ -302,7 +303,7 @@ fun BillSplitterHomeActivityScreen()
                         .align(Alignment.CenterHorizontally),
                     text = "Delete\nBill",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge.copy(
+                    style = MaterialTheme.typography.titleMedium.copy(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
                     )
@@ -360,7 +361,7 @@ fun BillSplitterHomeActivityScreen()
                             .align(Alignment.CenterHorizontally),
                         text = "View\nSummary",
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge.copy(
+                        style = MaterialTheme.typography.titleMedium.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
@@ -412,7 +413,7 @@ fun BillSplitterHomeActivityScreen()
                             .align(Alignment.CenterHorizontally),
                         text = "Access\nProfile",
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge.copy(
+                        style = MaterialTheme.typography.titleMedium.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
@@ -470,7 +471,7 @@ fun BillSplitterHomeActivityScreen()
                             .align(Alignment.CenterHorizontally),
                         text = "Manage\nProfile",
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge.copy(
+                        style = MaterialTheme.typography.titleMedium.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
@@ -522,7 +523,7 @@ fun BillSplitterHomeActivityScreen()
                             .align(Alignment.CenterHorizontally),
                         text = "LogOut\nProfile",
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge.copy(
+                        style = MaterialTheme.typography.titleMedium.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )

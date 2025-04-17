@@ -233,9 +233,12 @@ fun userAccountAccess(userData: UserData, context: Context) {
             if (dbData != null) {
                 if (dbData.password == userData.password) {
 
-                    Toast.makeText(context, "Login Sucessfully", Toast.LENGTH_SHORT).show()
+                    BillSplitterData.writeLS(context, true)
+                    BillSplitterData.writeMail(context, userData.emailid)
+                    BillSplitterData.writeUserName(context, userData.name)
 
-                            context.startActivity(Intent(context, BillSplitterHome::class.java))
+                    Toast.makeText(context, "Login Sucessfully", Toast.LENGTH_SHORT).show()
+                    context.startActivity(Intent(context, BillSplitterHome::class.java))
 
                 } else {
                     Toast.makeText(context, "Seems Incorrect Credentials", Toast.LENGTH_SHORT).show()

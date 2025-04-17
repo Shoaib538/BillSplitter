@@ -50,7 +50,17 @@ fun EntryScreenMA() {
     LaunchedEffect(Unit) {
         delay(3000)
 
-        context.startActivity(Intent(context, LoginActivity::class.java))
+//        context.startActivity(Intent(context, LoginActivity::class.java))
+        val currentStatus = BillSplitterData.readLS(context)
+
+        if(currentStatus)
+        {
+            context.startActivity(Intent(context, BillSplitterHome::class.java))
+            context.finish()
+        }else{
+            context.startActivity(Intent(context, LoginActivity::class.java))
+            context.finish()
+        }
 
 
     }
