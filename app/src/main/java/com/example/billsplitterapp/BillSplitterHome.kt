@@ -167,12 +167,12 @@ fun BillSplitterHomeActivityScreen()
                         )
                         .padding(horizontal = 6.dp, vertical = 12.dp)
                         .clickable {
-//                            context.startActivity(
-//                                Intent(
-//                                    context,
-////                                    PopularQuizActivity::class.java
-//                                )
-//                            )
+                            context.startActivity(
+                                Intent(
+                                    context,
+                                    CreateGroupActivity::class.java
+                                )
+                            )
 
                         }
 
@@ -182,7 +182,7 @@ fun BillSplitterHomeActivityScreen()
                         .size(48.dp)
                         .align(Alignment.CenterHorizontally),
                     painter = painterResource(id = R.drawable.add_bill),
-                    contentDescription = "Add\nBill"
+                    contentDescription = "Manage\nGroup"
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -191,7 +191,7 @@ fun BillSplitterHomeActivityScreen()
                 Text(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally),
-                    text = "Add\nBill",
+                    text = "Manage\nGroup",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = Color.Black,
