@@ -1,25 +1,36 @@
-package com.example.billsplitterapp
+package billsplitter.Shoaib.teesside
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -42,9 +53,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.database.FirebaseDatabase
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 class RegistrationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,8 +71,7 @@ class RegistrationActivity : ComponentActivity() {
 
 
 @Composable
-fun RegisterScreen()
-{
+fun RegisterScreen() {
 
     var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -70,9 +83,10 @@ fun RegisterScreen()
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(R.color.bg_main)),
+            .background(color = colorResource(R.color.bg_main))
+            .padding(WindowInsets.systemBars.asPaddingValues()),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -82,7 +96,7 @@ fun RegisterScreen()
             Text(
                 text = "Welcome",
                 color = Color.White,
-                style = TextStyle(fontSize = 52.sp, fontWeight = FontWeight.Bold)
+                style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold)
             )
             Text(
                 text = "Create your Account",
@@ -93,6 +107,11 @@ fun RegisterScreen()
         }
 
         Spacer(modifier = Modifier.height(24.dp))
+
+        UploadUserPhoto()
+
+        Spacer(modifier = Modifier.height(8.dp))
+
 
         OutlinedTextField(
             modifier = Modifier
@@ -195,17 +214,27 @@ fun RegisterScreen()
                 .clickable {
                     when {
                         email.isEmpty() -> {
-                            Toast.makeText(context, " Please Enter Mail", Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(context, " Please Enter Mail", Toast.LENGTH_SHORT)
+                                .show()
                         }
+
                         fullName.isEmpty() -> {
-                            Toast.makeText(context, " Please Enter Name", Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(context, " Please Enter Name", Toast.LENGTH_SHORT)
+                                .show()
                         }
 
                         phoneNumber.isEmpty() -> {
-                            Toast.makeText(context, " Please Enter PhoneNumber", Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(context, " Please Enter PhoneNumber", Toast.LENGTH_SHORT)
+                                .show()
                         }
+
                         password.isEmpty() -> {
-                            Toast.makeText(context, " Please Enter Password", Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(context, " Please Enter Password", Toast.LENGTH_SHORT)
+                                .show()
                         }
 
                         else -> {
@@ -215,7 +244,20 @@ fun RegisterScreen()
                                 phoneNumber,
                                 password
                             )
-                            registerUser(userData,context)
+
+                            val inputStream =
+                                context.contentResolver.openInputStream(UserPhoto.selImageUri)
+                            val bitmap = BitmapFactory.decodeStream(inputStream)
+                            val outputStream = ByteArrayOutputStream()
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                            val base64Image =
+                                Base64.encodeToString(
+                                    outputStream.toByteArray(),
+                                    Base64.DEFAULT
+                                )
+                            userData.usePhoto = base64Image
+
+                            registerUser(userData, context)
                         }
 
                     }
@@ -288,6 +330,9 @@ fun registerUser(userData: UserData, context: Context) {
                 Toast.makeText(context, "You Registered Successfully", Toast.LENGTH_SHORT)
                     .show()
 
+                context.startActivity(Intent(context, LoginActivity::class.java))
+                (context as Activity).finish()
+
             } else {
                 Toast.makeText(
                     context,
@@ -306,8 +351,90 @@ fun registerUser(userData: UserData, context: Context) {
 }
 
 data class UserData(
-    var name : String = "",
-    var emailid : String = "",
-    var area : String = "",
-    var password: String = ""
+    var name: String = "",
+    var emailid: String = "",
+    var area: String = "",
+    var password: String = "",
+    var usePhoto: String = ""
 )
+
+@Composable
+fun UploadUserPhoto() {
+    val activityContext = LocalContext.current
+
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val captureImageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
+            if (success) {
+                imageUri = getImageUri(activityContext)
+                UserPhoto.selImageUri = imageUri as Uri
+                UserPhoto.isImageSelected = true
+            } else {
+                UserPhoto.isImageSelected = false
+                Toast.makeText(activityContext, "Capture Failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                Toast.makeText(activityContext, "Permission Granted", Toast.LENGTH_SHORT).show()
+                captureImageLauncher.launch(getImageUri(activityContext)) // Launch the camera
+            } else {
+                Toast.makeText(activityContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    Column(
+        modifier = Modifier.size(100.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = if (imageUri != null) {
+                rememberAsyncImagePainter(model = imageUri)
+            } else {
+                painterResource(id = R.drawable.iv_addimage)
+            },
+            contentDescription = "Captured Image",
+            modifier = Modifier
+                .width(100.dp)
+                .height(100.dp)
+                .clickable {
+                    if (ContextCompat.checkSelfPermission(
+                            activityContext,
+                            Manifest.permission.CAMERA
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        captureImageLauncher.launch(getImageUri(activityContext))
+                    } else {
+                        permissionLauncher.launch(Manifest.permission.CAMERA)
+                    }
+                }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        if (imageUri == null) {
+            Text(text = "Tap the image to capture")
+        }
+    }
+}
+
+fun getImageUri(activityContext: Context): Uri {
+    val file = File(activityContext.filesDir, "captured_image.jpg")
+    return FileProvider.getUriForFile(
+        activityContext,
+        "${activityContext.packageName}.fileprovider",
+        file
+    )
+}
+
+
+object UserPhoto {
+    lateinit var selImageUri: Uri
+    var isImageSelected = false
+}

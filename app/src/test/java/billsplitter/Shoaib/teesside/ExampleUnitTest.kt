@@ -1,4 +1,4 @@
-package com.example.billsplitterapp
+package billsplitter.Shoaib.teesside
 
 import org.junit.Test
 

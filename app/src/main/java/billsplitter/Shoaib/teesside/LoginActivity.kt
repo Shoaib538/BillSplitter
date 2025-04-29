@@ -1,4 +1,4 @@
-package com.example.billsplitterapp
+package billsplitter.Shoaib.teesside
 
 import android.app.Activity
 import android.content.Context
@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,10 +14,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -42,8 +43,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.database.FirebaseDatabase
 
 class LoginActivity : ComponentActivity() {
@@ -57,8 +56,7 @@ class LoginActivity : ComponentActivity() {
 
 
 @Composable
-fun LoginScreen()
-{
+fun LoginScreen() {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -69,9 +67,10 @@ fun LoginScreen()
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(R.color.bg_main)),
+            .background(color = colorResource(R.color.bg_main))
+            .padding(WindowInsets.systemBars.asPaddingValues()),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -146,11 +145,14 @@ fun LoginScreen()
                 .clickable {
                     when {
                         email.isEmpty() -> {
-                            Toast.makeText(context, " Please Enter Mail", Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(context, " Please Enter Mail", Toast.LENGTH_SHORT)
+                                .show()
                         }
 
                         password.isEmpty() -> {
-                            Toast.makeText(context, " Please Enter Password", Toast.LENGTH_SHORT)
+                            Toast
+                                .makeText(context, " Please Enter Password", Toast.LENGTH_SHORT)
                                 .show()
                         }
 
@@ -162,7 +164,7 @@ fun LoginScreen()
                                 password
                             )
 
-                            userAccountAccess(userData,context)
+                            userAccountAccess(userData, context)
                         }
 
                     }
@@ -225,7 +227,8 @@ fun LoginScreen()
 fun userAccountAccess(userData: UserData, context: Context) {
 
     val firebaseDatabase = FirebaseDatabase.getInstance()
-    val databaseReference = firebaseDatabase.getReference("BillSplitterData").child(userData.emailid.replace(".", ","))
+    val databaseReference =
+        firebaseDatabase.getReference("BillSplitterData").child(userData.emailid.replace(".", ","))
 
     databaseReference.get().addOnCompleteListener { task ->
         if (task.isSuccessful) {
@@ -234,14 +237,16 @@ fun userAccountAccess(userData: UserData, context: Context) {
                 if (dbData.password == userData.password) {
 
                     BillSplitterData.writeLS(context, true)
-                    BillSplitterData.writeMail(context, userData.emailid)
-                    BillSplitterData.writeUserName(context, userData.name)
+                    BillSplitterData.writeMail(context, dbData.emailid)
+                    BillSplitterData.writeUserName(context, dbData.name)
+                    BillSplitterData.writePhoto(context, dbData.usePhoto)
 
-                    Toast.makeText(context, "Login Sucessfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show()
                     context.startActivity(Intent(context, BillSplitterHome::class.java))
-
+                    (context as Activity).finish()
                 } else {
-                    Toast.makeText(context, "Seems Incorrect Credentials", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Seems Incorrect Credentials", Toast.LENGTH_SHORT)
+                        .show()
                 }
             } else {
                 Toast.makeText(context, "Your account not found", Toast.LENGTH_SHORT).show()

@@ -1,18 +1,25 @@
-package com.example.billsplitterapp
+package billsplitter.Shoaib.teesside
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
@@ -31,11 +38,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.compose.ui.unit.sp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -71,69 +80,113 @@ fun CreateGroupScreen() {
         }
     }
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        OutlinedTextField(
-            value = groupName,
-            onValueChange = { groupName = it },
-            label = { Text("Group Name") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(Modifier.height(8.dp))
+    Column(modifier = Modifier.fillMaxSize().padding(WindowInsets.systemBars.asPaddingValues())) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = colorResource(id = R.color.bt_color)
+                )
+                .padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Image(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable {
+                        (context as Activity).finish()
+                    },
+                painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                contentDescription = "Back"
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(12.dp),
+                text = "Create Group",
+                color = Color.White,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+
+            )
+        }
 
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp)
         ) {
 
 
             OutlinedTextField(
-                value = memberEmail,
-                onValueChange = { memberEmail = it },
-                label = { Text("Add Member Email") },
+                value = groupName,
+                onValueChange = { groupName = it },
+                label = { Text("Group Name") },
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(Modifier.height(8.dp))
 
-            // Suggestion dropdown
-            DropdownMenu(
-                expanded = allUsers.isNotEmpty(),
-                onDismissRequest = { allUsers = emptyList() }
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                allUsers.forEach { email ->
-                    DropdownMenuItem(
-                        text = { Text(email) },
-                        onClick = {
-                            memberList.add(email)
-                            memberEmail = ""
-                            allUsers = emptyList()
-                        }
-                    )
+
+
+                OutlinedTextField(
+                    value = memberEmail,
+                    onValueChange = { memberEmail = it },
+                    label = { Text("Add Member Email") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                // Suggestion dropdown
+                DropdownMenu(
+                    expanded = allUsers.isNotEmpty(),
+                    onDismissRequest = { allUsers = emptyList() }
+                ) {
+                    allUsers.forEach { email ->
+                        DropdownMenuItem(
+                            text = { Text(email) },
+                            onClick = {
+                                memberList.add(email)
+                                memberEmail = ""
+                                allUsers = emptyList()
+                            }
+                        )
+                    }
                 }
             }
-        }
 
-        Spacer(Modifier.height(12.dp))
-        Text("Members:", fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(12.dp))
+            Text("Members:", fontWeight = FontWeight.Bold)
 
-        // Display added members with remove icon
-        memberList.forEach { member ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp)
-            ) {
-                Text(text = member, modifier = Modifier.weight(1f))
-                IconButton(onClick = { memberList.remove(member) }) {
-                    Icon(Icons.Default.Delete, contentDescription = "Remove Member")
+            // Display added members with remove icon
+            memberList.forEach { member ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                ) {
+                    Text(text = member, modifier = Modifier.weight(1f))
+                    IconButton(onClick = { memberList.remove(member) }) {
+                        Icon(Icons.Default.Delete, contentDescription = "Remove Member")
+                    }
                 }
             }
-        }
 
-        Spacer(Modifier.height(16.dp))
-        Button(
-            onClick = { createGroup(context, groupName, memberList) },
-            enabled = groupName.isNotBlank() && memberList.isNotEmpty()
-        ) {
-            Text("Create Group")
+            Spacer(Modifier.height(16.dp))
+            Button(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = {
+                    memberList.add(BillSplitterData.readMail(context))
+                    createGroup(context, groupName, memberList)
+                },
+                enabled = groupName.isNotBlank() && memberList.isNotEmpty()
+            ) {
+                Text("Create Group")
+            }
         }
     }
 }
@@ -178,6 +231,8 @@ fun createGroup(context: Context, groupName: String, memberEmails: List<String>)
     database.child(groupId).setValue(group)
         .addOnSuccessListener {
             Toast.makeText(context, "Group created successfully!", Toast.LENGTH_SHORT).show()
+
+            (context as Activity).finish()
         }
         .addOnFailureListener {
             Toast.makeText(context, "Failed to create group.", Toast.LENGTH_SHORT).show()

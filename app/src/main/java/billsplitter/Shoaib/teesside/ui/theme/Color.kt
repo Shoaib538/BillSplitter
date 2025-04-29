@@ -1,4 +1,4 @@
-package com.example.billsplitterapp.ui.theme
+package billsplitter.Shoaib.teesside.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

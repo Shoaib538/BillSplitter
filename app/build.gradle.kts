@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.billsplitterapp"
+    namespace = "billsplitter.Shoaib.teesside"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.billsplitterapp"
+        applicationId = "billsplitter.Shoaib.teesside"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -72,5 +72,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.firebase.database.ktx)
+
+    implementation("androidx.biometric:biometric:1.4.0-alpha02")
+
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
 
 }

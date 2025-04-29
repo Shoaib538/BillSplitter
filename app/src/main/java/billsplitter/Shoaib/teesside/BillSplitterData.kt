@@ -1,4 +1,4 @@
-package com.example.billsplitterapp
+package billsplitter.Shoaib.teesside
 
 import android.content.Context
 
@@ -38,5 +38,15 @@ object BillSplitterData {
         return userLogin.getString("USERMAIL", "")!!
     }
 
+    fun writePhoto(context: Context, value: String) {
+        val userLogin = context.getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE)
+        val editor = userLogin.edit()
+        editor.putString("USERPHOTO", value).apply()
+    }
+
+    fun readPhoto(context: Context): String {
+        val userLogin = context.getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE)
+        return userLogin.getString("USERPHOTO", "")!!
+    }
 
 }

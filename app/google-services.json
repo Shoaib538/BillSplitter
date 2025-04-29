@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "427090396934",
+    "firebase_url": "https://billsplitter-a4107-default-rtdb.firebaseio.com",
     "project_id": "billsplitter-a4107",
     "storage_bucket": "billsplitter-a4107.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:427090396934:android:15ab1951b71a67b50dc087",
+        "mobilesdk_app_id": "1:427090396934:android:2b1f8073abb2c19a0dc087",
         "android_client_info": {
-          "package_name": "com.example.billsplitterapp"
+          "package_name": "billsplitter.Shoaib.teesside"
         }
       },
       "oauth_client": [],
